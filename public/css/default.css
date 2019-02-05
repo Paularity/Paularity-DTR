@@ -1,0 +1,16 @@
+.page-item.active .page-link
+{
+    background-color: #202020;
+    color: #FFFFFF;
+    border-color: #202020;
+}
+
+.page-link
+{
+    color: #202020;
+}
+
+.page-link:hover
+{
+    color: #000000;
+}

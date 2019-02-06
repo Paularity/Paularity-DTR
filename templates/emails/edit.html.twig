@@ -15,9 +15,10 @@
             <tr>
                 <td>
                     {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    <a href="{{ path("email_index") }}" class="btn btn-danger">Cancel</a>
-                    <button class="btn btn-primary">Save</button>
+                        <input type="hidden" name="_token" value="{{ csrf_token('update') }}">
+                        {{ form_widget(form) }}
+                        <a href="{{ path("email_index") }}" class="btn btn-danger">Cancel</a>
+                        <button class="btn btn-primary">Save</button>
                     {{ form_end(form) }}
                 </td>
             </tr>

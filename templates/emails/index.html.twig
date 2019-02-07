@@ -25,6 +25,9 @@
                 <table class="table table-striped table-bordered rounded">
                     <thead class="thead-dark">
                         <tr>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <th scope="col">User ID</th>
+                            {% endif %}
                             <th scope="col">Date</th>
                             <th scope="col">Time In</th>
                         </tr>
@@ -32,27 +35,35 @@
                     <tbody>
                         {% for record in records %}
                             <tr>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <th scope="row">{{ record.userId }}</th>
+                                {% endif %}
                                 <th scope="row">{{ record.timein|date('l, M d Y') }}</th>
                                 <td>
                                     {{ record.timein|date('h:i:s a.') }} 
                                     <div class="float-right" id="actions">
                                         {% if record.sent == false %}
                                         <a href="{{ path('email_send', {'id': record.id}) }}" class="mr-2" onclick="return confirmSubmit('Are you sure you want to send this message?');"><span><i class="fa fa-share-square"></i></span></a>
-                                        <a href="{{ path('email_edit', {'id': record.id}) }}" class="mr-2 text-success" onclick="return confirmSubmit('Are you sure you want to modify this data?');"><span><i class="fa fa-edit"></i></span></a>    
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                <a href="{{ path('email_edit', {'id': record.id}) }}" class="mr-2 text-success" onclick="return confirmSubmit('Are you sure you want to modify this data?');"><span><i class="fa fa-edit"></i></span></a>    
+                                            {% endif %}
+                                        {% endif %}                                        
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a href="{{ path('email_delete', {'id': record.id}) }}" onclick="return confirmSubmit('Are you sure you want to delete this data?');" class="text-danger"><span><i class="fa fa-times"></i></span></a> 
                                         {% endif %}
-
-                                        <a href="{{ path('email_delete', {'id': record.id}) }}" onclick="return confirmSubmit('Are you sure you want to delete this data?');" class="text-danger"><span><i class="fa fa-times"></i></span></a> 
                                     </div>
                                 </td>                               
                             </tr>
                         {% endfor %}
                         <tr>
-                            <td colspan="3" class="text-right">
-                                <form method="post" action="{{ path('email_new') }}">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('new') }}">
-                                    <button class="btn btn-dark btn-punch-out">Punch In <span><i class="fa fa-angle-right"></i></span></button>
-                                </form>
-                            </td>
+                            {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN') == false and is_granted('ROLE_SUPER_ADMIN') == false %}
+                                <td colspan="3" class="text-right">
+                                    <form method="post" action="{{ path('email_new') }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('new') }}">
+                                        <button class="btn btn-dark btn-punch-out">Punch In <span><i class="fa fa-angle-right"></i></span></button>
+                                    </form>
+                                </td>
+                            {% endif %}
                         </tr>
                     </tbody> 
                 </table>

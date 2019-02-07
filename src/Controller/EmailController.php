@@ -13,20 +13,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\RecordRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("email")
- * @Security("has_role('ROLE_ADMIN')")
  */
 class EmailController extends AbstractController
 {
     /**
      * @Route("/", name="email_index", methods={"GET"} )
      */
-    public function index( RecordRepository $recordRepository, PaginatorInterface $paginator, Request $request )
+    public function index( RecordRepository $recordRepository, PaginatorInterface $paginator, Request $request, UserInterface $user )
     {
-        $records = $recordRepository->findBy([], ['timein' => 'DESC']);
-
+        if( $this->isGranted('ROLE_ADMIN') )
+        {
+            $records = $recordRepository->findBy([], ['timein' => 'DESC']);
+        }
+        else
+        {
+            $records = $recordRepository->findByUser($user);
+        }
+        
         // Paginate the results of the query
         $records = $paginator->paginate(
             // Doctrine Query, not results
@@ -44,12 +51,13 @@ class EmailController extends AbstractController
     /**
      * @Route("/new", name="email_new", methods={"POST"} )
      */
-    public function new(Request $request)
+    public function new(Request $request, UserInterface $user)
     {
         $record = new Record();
 
         $record->setTimein( new \DateTime() );
         $record->setTimeout( new \DateTime() );
+        $record->setUserId( $user->getId() );
         $record->setSent(false);
 
         if( $this->isCsrfTokenValid('new'.$record->getId(), $request->request->get('_token')) )
@@ -116,6 +124,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route( "/edit?id={id}", name="email_edit", methods={"GET","POST"} )
+     *  @Security("has_role('ROLE_ADMIN')")
      */
     public function edit(Request $request, Record $record)
     {
@@ -148,6 +157,7 @@ class EmailController extends AbstractController
 
     /**
      * @Route( "/delete?id={id}", name="email_delete", methods={"GET","POST"} )
+     *  @Security("has_role('ROLE_ADMIN')")
      */
     public function delete( Record $record )
     {

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %} 
+    <div class="row">
+        {# you can read and display just one flash message type... #}
+        {% for message in app.flashes('notice') %}
+            <div class="col-12 mt-2 alert alert-success flash-notice">
+                <span><i class="fa fa-info-circle"></i></span> {{ message }}
+                <a class="close-notif float-right" onclick="hideAlert('.flash-notice');" style="cursor: pointer;"><span><i class="fa fa-times"></i></span></a>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="col-12 mt-2 alert alert-danger flash-error">
+                <span><i class="fa fa-exclamation-circle"></i></span> {{ message }}
+                <a class="close-notif float-right" onclick="hideAlert('.flash-error');" style="cursor: pointer;"><span><i class="fa fa-times"></i></span></a>
+            </div>
+        {% endfor %}
+
+        <p class="display-4 mb-5"> <span><i class="fa fa-chart-line"></i></span> Dashboard</p>
+    </div>
+    {% endif %}
+{% endblock %}

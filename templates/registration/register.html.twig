@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add User{% endblock %}
+
+{% block body %}
+    <h1><span><i class="fa fa-user-plus"></i></span> Add User</h1>
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword) }}
+        {{ form_row(registrationForm.roles) }}
+        <button class="btn btn-dark btn-punch-out">Submit <span><i class="fa fa-angle-right"></i></span></button>
+    {{ form_end(registrationForm) }}
+{% endblock %}

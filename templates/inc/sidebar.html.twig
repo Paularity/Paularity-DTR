@@ -1,0 +1,23 @@
+<div class="card text-center" style="width: 18rem;">
+    <div class="card-header">
+    Menu
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <a href="{{path('app_homepage')}}">Dashboard</a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="list-group-item">
+                <a href="{{path('email_index')}}">Records</a>
+            </li>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <li class="list-group-item">
+                    <a href="{{path('user_index')}}">Users</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#">Roles</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</div> 

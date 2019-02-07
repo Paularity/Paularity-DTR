@@ -17,8 +17,8 @@
                     {{ form_start(form) }}
                         <input type="hidden" name="_token" value="{{ csrf_token('update') }}">
                         {{ form_widget(form) }}
-                        <a href="{{ path("email_index") }}" class="btn btn-danger">Cancel</a>
-                        <button class="btn btn-primary">Save</button>
+                        <button class="btn btn-dark btn-punch-out">Update <span><i class="fa fa-angle-right"></i></span></button>
+                        <a href="{{ path("user_register") }}" class="btn btn-danger">Cancel</a>
                     {{ form_end(form) }}
                 </td>
             </tr>

@@ -13,8 +13,21 @@
 
         {% include "inc/navbar.html.twig" %}
 
-        <div class="container">
-            {% block body %}{% endblock %}
+        <div class="row m-0 p-0">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}            
+                <div class="col pt-4 pl-4" style="max-width: 340px;">
+                    {% include "inc/sidebar.html.twig" %}
+                </div>
+            {% endif %}
+            <div class="col pr-5 pt-4">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            {% block body %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {% include "inc/footer.html.twig" %}

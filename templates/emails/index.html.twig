@@ -41,8 +41,9 @@
                                         <a href="{{ path('email_edit', {'id': record.id}) }}" class="mr-2 text-success" onclick="return confirmSubmit('Are you sure you want to modify this data?');"><span><i class="fa fa-edit"></i></span></a>    
                                         {% endif %}
 
-                                        <a href="{{ path('email_delete', {'id': record.id}) }}" onclick="return confirmSubmit('Are you sure you want to delete this data?');" class="text-danger"><span><i class="fa fa-times"></i></span></a> </td>
+                                        <a href="{{ path('email_delete', {'id': record.id}) }}" onclick="return confirmSubmit('Are you sure you want to delete this data?');" class="text-danger"><span><i class="fa fa-times"></i></span></a> 
                                     </div>
+                                </td>                               
                             </tr>
                         {% endfor %}
                         <tr>
@@ -53,7 +54,7 @@
                                 </form>
                             </td>
                         </tr>
-                    </tbody>
+                    </tbody> 
                 </table>
             </div>
             <div class="pagination">

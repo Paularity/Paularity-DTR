@@ -21,8 +21,9 @@
 
         <p class="display-4 mb-5"> <span><i class="fa fa-business-time"></i></span> My Timecard</p>
         <div class="col-12 p-0 mt-2 mb-2">
+            <input type="text" id="filterInput" class="w-100 my-3 p-2" onkeyup="filterizeSearch();" placeholder="Search for dates.." title="Type in a date">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered rounded">
+                <table class="table table-striped table-bordered rounded" id="filterTable">
                     <thead class="thead-dark">
                         <tr>
                             {% if is_granted('ROLE_ADMIN') %}

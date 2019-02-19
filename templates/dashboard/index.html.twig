@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+    </script>
+{% endblock %}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
@@ -20,7 +27,12 @@
             </div>
         {% endfor %}
 
-        <p class="display-4 mb-5"> <span><i class="fa fa-chart-line"></i></span> Dashboard</p>
+        <div class="col-12">
+            <p class="display-4 mb-5"> <span><i class="fa fa-chart-line"></i></span> Dashboard</p>
+        </div>
+        <div class="col">
+            <div id="chart_div"></div>
+        </div>
     </div>
     {% endif %}
 {% endblock %}

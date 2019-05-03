@@ -5,6 +5,7 @@
 {% block body %}
     <h1><span><i class="fa fa-user-plus"></i></span> Add User</h1>
 
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword) }}

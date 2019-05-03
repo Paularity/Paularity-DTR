@@ -5,20 +5,65 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
+use App\Repository\RecordRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\AreaChart;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractController
 {
     /**
      * @Route("/", name="app_homepage", methods={"GET"})
      */    
-    public function index()
+    public function index( RecordRepository $recordRepository, UserInterface $user )
     {
+        $records = $recordRepository->findBy([], ['timein' => 'DESC']);
+
+        $time_in_arr = [];
+
+        //add header to column
+        array_push( $time_in_arr, [['label' => 'Date', 'type' => 'date'], ['label' => 'Attendance', 'type' => 'number']] );
+
+        foreach ($records as $record) 
+        {            
+            $time_in = strtotime(date_format($record->getTimeIn(),"H:i:s"));                                    
+            
+            if( $time_in < 1556849159 )
+            {
+                array_push($time_in_arr, [ $record->getTimeIn(), 1 ] );
+            }            
+            else if( $time_in > 1556849159 )
+            {
+                array_push($time_in_arr, [ $record->getTimeIn(), -1 ] );
+            }
+            // var_dump(strtotime("10:05:59")); die;
+        }
+        
+        // $arrayList = 
+        //             [
+        //                 [['label' => 'Date', 'type' => 'date'], ['label' => 'Attendance', 'type' => 'number']],
+        //                 [   date_create("2019-02-04 09:41:13"), 1    ],
+        //                 [   date_create("2019-02-04 09:41:13"), 1    ],
+        //                 [   date_create("2019-02-05 10:00:59"), 1    ],
+        //                 [   date_create("2019-02-06 09:51:13"), 1    ],
+        //                 [   date_create("2019-02-07 10:11:13"), -1   ],
+        //                 [   date_create("2019-02-08 10:01:01"), -1   ],
+        //             ];
+
+        $cal = new CalendarChart();
+        $cal->getData()->setArrayToDataTable( $time_in_arr );
+        $cal->getOptions()->setTitle('Attendance');
+        $cal->getOptions()->setHeight(200);
+        $cal->getOptions()->setWidth(1000);
+
         //return to views
-        return $this->render('dashboard/index.html.twig');
+        return $this->render('dashboard/index.html.twig', array('calendarChart' => $cal) );
+        // return $this->render('dashboard/index.html.twig', array('areaChart' => $area) );
     }
 }

@@ -32,29 +32,18 @@ class DashboardController extends AbstractController
 
         foreach ($records as $record) 
         {            
-            $time_in = strtotime(date_format($record->getTimeIn(),"H:i:s"));                                    
+            $time_in = strtotime(date_format($record->getTimeIn(),"H:i:s"));
+            $time_in = date("g.i", strtotime(date_format($record->getTimeIn(),"H:i:s")) );                                         
             
-            if( $time_in < 1556849159 )
+            if( $time_in < 10.05 )
             {
                 array_push($time_in_arr, [ $record->getTimeIn(), 1 ] );
             }            
-            else if( $time_in > 1556849159 )
+            else if( $time_in > 10.05 )
             {
                 array_push($time_in_arr, [ $record->getTimeIn(), -1 ] );
             }
-            // var_dump(strtotime("10:05:59")); die;
         }
-        
-        // $arrayList = 
-        //             [
-        //                 [['label' => 'Date', 'type' => 'date'], ['label' => 'Attendance', 'type' => 'number']],
-        //                 [   date_create("2019-02-04 09:41:13"), 1    ],
-        //                 [   date_create("2019-02-04 09:41:13"), 1    ],
-        //                 [   date_create("2019-02-05 10:00:59"), 1    ],
-        //                 [   date_create("2019-02-06 09:51:13"), 1    ],
-        //                 [   date_create("2019-02-07 10:11:13"), -1   ],
-        //                 [   date_create("2019-02-08 10:01:01"), -1   ],
-        //             ];
 
         $cal = new CalendarChart();
         $cal->getData()->setArrayToDataTable( $time_in_arr );

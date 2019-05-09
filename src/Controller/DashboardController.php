@@ -53,6 +53,5 @@ class DashboardController extends AbstractController
 
         //return to views
         return $this->render('dashboard/index.html.twig', array('calendarChart' => $cal) );
-        // return $this->render('dashboard/index.html.twig', array('areaChart' => $area) );
     }
 }

@@ -16,12 +16,15 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\AreaChart;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class DashboardController extends AbstractController
 {
     /**
      * @Route("/", name="app_homepage", methods={"GET"})
      */    
-    public function index( RecordRepository $recordRepository, UserInterface $user )
+    public function index( RecordRepository $recordRepository ) 
     {
         $records = $recordRepository->findBy([], ['timein' => 'DESC']);
 

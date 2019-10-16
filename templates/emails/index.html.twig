@@ -57,14 +57,12 @@
                             </tr>
                         {% endfor %}
                         <tr>
-                            {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN') == false and is_granted('ROLE_SUPER_ADMIN') == false %}
-                                <td colspan="3" class="text-right">
-                                    <form method="post" action="{{ path('email_new') }}">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('new') }}">
-                                        <button class="btn btn-dark btn-punch-out">Punch In <span><i class="fa fa-angle-right"></i></span></button>
-                                    </form>
-                                </td>
-                            {% endif %}
+                            <td colspan="3" class="text-right">
+                                <form method="post" action="{{ path('email_new') }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('new') }}">
+                                    <button class="btn btn-dark btn-punch-out">Punch In <span><i class="fa fa-angle-right"></i></span></button>
+                                </form>
+                            </td>
                         </tr>
                     </tbody> 
                 </table>
